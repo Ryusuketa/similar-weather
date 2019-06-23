@@ -1,0 +1,1 @@
+python main.py --demand_csv=localfile/demand.csv --weather_csv=localfile/data_gathered.csv

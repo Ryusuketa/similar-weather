@@ -33,7 +33,6 @@ class ClassifierValidation(object):
         self.y_pred = pd.concat(result, axis=0).sort_index()
 
     def report(self, report_path):
-        df = self.y_pred
-        df['output_true'] = self.y
+        df = pd.DataFrame({'output_predict': self.y_pred, 'output_true': self.y})
         
         df.to_csv(report_path)
