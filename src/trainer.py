@@ -20,7 +20,7 @@ class ClassifierValidation(object):
         y_pred = self.model.predict_proba(X_val)
 
         return y_pred
-    
+
     def validation_run(self):
         result = []
         for train, val in self.kf.split(self.X):

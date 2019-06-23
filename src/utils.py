@@ -27,15 +27,3 @@ def load_data(cons_csv_path: str, weather_csv_path: str) -> pd.DataFrame:
 
 def get_datetime2index(li_datetime: list) -> pd.DataFrame:
     return {dt: i for i, dt in zip(range(li_datetime), dt)}
-
-
-def get_train_validation_data(corr, features, window=1, val_rate=0.2):
-    val_num = int(corr.shape[0] * 0.2)
-
-    train_corr = corr[:-val_num:,:-val_num]
-    val_corr = corr[-val_num:,-val_num:]
-
-    train_features = features[:-val_num, :-val_num]
-    val_features = features[-val_num:, -val_num:]
-
-    return train_corr, val_corr, train_features, val_features

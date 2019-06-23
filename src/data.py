@@ -53,9 +53,8 @@ class PreprocessingTask(luigi.Task):
         corr = demand_correlation(df_demand)
         weather = get_weather_vector(df_weather)
 
-        print(weather.shape)
         data_pairs = combinations(np.arange(len(corr)), 2)
-        
+
         corr = np.array([corr[idx] for idx in data_pairs])
         data = dict(corr=corr, weather=weather)
         for k, target in self.output().items():
