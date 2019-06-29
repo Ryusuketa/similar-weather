@@ -45,7 +45,6 @@ class PredictResidual(RegressorBase):
         pass
 
 
-
 def get_pipeline():
-    cls_pipeline = [('HGB': )]
+    cls_pipeline = [('HGB': HistGradientBoostingClassifier())]
     rgr_pipeline = [('SWR': SimilarWeatherRegression(cls_pipeline))]
