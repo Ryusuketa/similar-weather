@@ -8,6 +8,7 @@ verify_ssl = true
 [packages]
 scikit-learn = "*"
 luigi = "*"
+pytest = "*"
 
 [requires]
 python_version = "3.6"
