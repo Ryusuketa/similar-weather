@@ -11,4 +11,6 @@ if __name__ == '__main__':
     parser.add_argument('--demand_csv', type=str, required=True)
     args = parser.parse_args()
 
-    luigi.build([PreprocessingTask(demand_filepath=args.demand_csv, weather_filepath=args.weather_csv)], local_scheduler=True)
+    luigi.build([PreprocessingTask(demand_filepath=args.demand_csv,
+                                   weather_filepath=args.weather_csv)],
+                local_scheduler=True)
