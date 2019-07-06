@@ -41,7 +41,6 @@ class PreprocessingTask(luigi.Task):
                     weather=luigi.LocalTarget("data/weather_feature.pkl", format=luigi.format.Nop))
 
     def run(self):
-        
         inputs = self.input()
         data = {}
         for k, target in inputs.items():
