@@ -11,7 +11,7 @@ def check_cons_columns(df: pd.DataFrame):
 
 
 def check_weather_columns(df: pd.DataFrame):
-    if set(df.columns) != {'datetime'}:
+    if  'datetime' not in set(df.columns):
         raise ValueError('The column names must have "datetime" . Please modify column names.')
     else:
         return True
@@ -19,7 +19,7 @@ def check_weather_columns(df: pd.DataFrame):
 
 def load_data(cons_csv_path: str, weather_csv_path: str) -> pd.DataFrame:
     df_demand = pd.read_csv(cons_csv_path)
-    check_cons_columns(df_demand) 
+    check_cons_columns(df_demand)
     df_weather = pd.read_csv(weather_csv_path)
     check_weather_columns(df_weather)
 
