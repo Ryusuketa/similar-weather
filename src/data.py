@@ -12,7 +12,7 @@ from itertools import combinations
 class LocalDataLoadTask(luigi.Task):
     demand_filepath = luigi.Parameter()
     weather_filepath = luigi.Parameter()
-    period = luigi.Parameter()
+
 
     def input_local_data(self):
         df_demand, df_weather = load_data(self.demand_filepath,
@@ -37,6 +37,8 @@ class LocalDataLoadTask(luigi.Task):
 
 @inherits(LocalDataLoadTask)
 class PreprocessingTask(luigi.Task):
+    period = luigi.IntParameter()
+
     def _data_pairs(self, arr_len):
         return combinations(np.arange(arr_len), 2)
 
@@ -57,8 +59,8 @@ class PreprocessingTask(luigi.Task):
         df_demand = data['demand']
         df_weather = data['weather']
 
-        corr = demand_correlation(df_demand, 3)
-        weather = get_weather_vector(df_weather, 3)
+        corr = demand_correlation(df_demand, self.period)
+        weather = get_weather_vector(df_weather, self.period)
         arr_len = len(corr)
         corr = np.array([corr[idx] for idx in self._data_pairs(arr_len)])
         weather = np.array([weather[:, idx[0], idx[1]]
