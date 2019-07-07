@@ -8,6 +8,7 @@ import numpy as np
 
 from itertools import combinations
 
+
 class LocalDataLoadTask(luigi.Task):
     demand_filepath = luigi.Parameter()
     weather_filepath = luigi.Parameter()
@@ -24,7 +25,6 @@ class LocalDataLoadTask(luigi.Task):
 
     def run(self):
         targets = self.output()
-
         inputs = self.input()
         for k, target in targets.items():
             with target.open('wb') as f:
@@ -41,7 +41,6 @@ class PreprocessingTask(luigi.Task):
                     weather=luigi.LocalTarget("data/weather_feature.pkl", format=luigi.format.Nop))
 
     def run(self):
-        
         inputs = self.input()
         data = {}
         for k, target in inputs.items():

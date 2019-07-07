@@ -9,6 +9,8 @@ verify_ssl = true
 scikit-learn = "*"
 luigi = "*"
 pytest = "*"
+optuna = "*"
+sklearn = "*"
 
 [requires]
 python_version = "3.6"
