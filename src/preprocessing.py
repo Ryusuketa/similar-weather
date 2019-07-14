@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+from itertools import combinations
 
 
 def demand_correlation(df, period=1):
@@ -42,5 +43,13 @@ def get_weather_vector(df_weather, period=1, categorical_columns=['weather']):
     return np.concatenate([data, t_data], 0)
 
 
-def get_correlation_label(corr, threshold=0.7):
-    pass
+def get_data_pairs(corr: np.ndarray, weather: np.ndarray):
+    def _data_pairs(arr_len: int):
+        return combinations(np.arange(arr_len), 2)
+    
+    arr_len = len(corr)
+    corr = np.array([corr[idx] for idx in _data_pairs(arr_len)])
+    weather = np.array([weather[:, idx[0], idx[1]]
+                        for idx in _data_pairs(arr_len)])
+
+    return corr, weather

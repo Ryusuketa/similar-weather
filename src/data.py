@@ -3,7 +3,7 @@ from luigi.util import inherits
 
 import pickle
 from src.utils import load_data
-from src.preprocessing import demand_correlation, get_weather_vector
+from src.preprocessing import demand_correlation, get_weather_vector, get_data_pairs
 import numpy as np
 
 from itertools import combinations
@@ -38,9 +38,6 @@ class LocalDataLoadTask(luigi.Task):
 class PreprocessingTask(luigi.Task):
     period = luigi.IntParameter()
 
-    def _data_pairs(self, arr_len: int):
-        return combinations(np.arange(arr_len), 2)
-
     def requires(self):
         return self.clone_parent()
 
@@ -60,14 +57,9 @@ class PreprocessingTask(luigi.Task):
 
         corr = demand_correlation(df_demand, self.period)
         weather = get_weather_vector(df_weather, self.period)
-        arr_len = len(corr)
-        corr = np.array([corr[idx] for idx in self._data_pairs(arr_len)])
-        weather = np.array([weather[:, idx[0], idx[1]]
-                            for idx in self._data_pairs(arr_len)])
+        corr, weather = get_data_pairs(corr, weather)
 
-        weather_splitted, corr_splitted = train_validation_split(weather, corr)
-
-        data = dict(corr=corr_splitted, weather=weather_splitted)
+        data = dict(corr=corr, weather=weather)
 
         for k, target in self.output().items():
             with target.open('w') as f:
