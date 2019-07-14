@@ -1,8 +1,9 @@
 import luigi
 import argparse
+import numpy as np
 
 from src.utils import load_data
-from src.data import PreprocessingTask
+from src.model import ModelTrainingTask
 
 
 if __name__ == '__main__':
@@ -12,7 +13,10 @@ if __name__ == '__main__':
     parser.add_argument('--period', type=int, default=1)
     args = parser.parse_args()
 
-    luigi.build([PreprocessingTask(demand_filepath=args.demand_csv,
+    luigi.configuration.LuigiConfigParser.add_config_path('./conf/model_conf.ini')
+    np.random.seed(2000)
+
+    luigi.build([ModelTrainingTask(demand_filepath=args.demand_csv,
                                    weather_filepath=args.weather_csv,
                                    period=args.period,)],
                 local_scheduler=True)

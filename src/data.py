@@ -13,7 +13,6 @@ class LocalDataLoadTask(luigi.Task):
     demand_filepath = luigi.Parameter()
     weather_filepath = luigi.Parameter()
 
-
     def input_local_data(self):
         df_demand, df_weather = load_data(self.demand_filepath,
                                           self.weather_filepath)
@@ -39,7 +38,7 @@ class LocalDataLoadTask(luigi.Task):
 class PreprocessingTask(luigi.Task):
     period = luigi.IntParameter()
 
-    def _data_pairs(self, arr_len):
+    def _data_pairs(self, arr_len: int):
         return combinations(np.arange(arr_len), 2)
 
     def requires(self):
@@ -66,7 +65,9 @@ class PreprocessingTask(luigi.Task):
         weather = np.array([weather[:, idx[0], idx[1]]
                             for idx in self._data_pairs(arr_len)])
 
-        data = dict(corr=corr, weather=weather)
+        weather_splitted, corr_splitted = train_validation_split(weather, corr)
+
+        data = dict(corr=corr_splitted, weather=weather_splitted)
 
         for k, target in self.output().items():
             with target.open('w') as f:
